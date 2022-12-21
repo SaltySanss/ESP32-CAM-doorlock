@@ -38,6 +38,7 @@
 #define buzz 4
 #define magnetic 12
 #define solenoid 13
+#define Switch 16
 #define I2C_SDA 14
 #define I2C_SCL 15
 LiquidCrystal_I2C lcd(0x27,20,4);
@@ -45,8 +46,8 @@ LiquidCrystal_I2C lcd(0x27,20,4);
 // ===========================
 // Enter your WiFi credentials
 // ===========================
-const char* ssid = "Salty";
-const char* password = "SaltySanss";
+const char* ssid = "....";
+const char* password = ".......";
 #define LINE_TOKEN  "--------------------" // generate via line
 
 void startCameraServer();
@@ -160,6 +161,7 @@ void setup() {
   pinMode(buzz,OUTPUT)
   pinMode(magnetic,OUTPUT);
   pinMode(solenoid,OUTPUT);
+  pinMode(Switch,INPUT)
   Wire.begin(I2C_SDA,I2C_SCL);
   lcd.init(); 
   lcd.backlight();
@@ -182,6 +184,18 @@ void setname(){
 
 void loop() {
 
+  if(digitalRead(Switch)== 1)
+    {
+      digitalWrite(magnetic,LOW);
+      digitalWrite(solenoid,HIGH);
+      digitalWrite(buzz,HIGH)
+    }
+  else
+    {
+      digitalWrite(magnetic,HIGH);
+       digitalWrite(solenoid,LOW);
+    }
+  
   if(faceCheck = true){
     digitalWrite(magnetic,LOW);
     digitalWrite(solenoid,HIGH);
@@ -192,8 +206,8 @@ void loop() {
     lcd.setCursor(0,1);
     lcd.print(hour()+":"+minute());
     delay(1000);
-    digitalWrite(magnetic,HIGH);
-    digitalWrite(solenoid,LOW);
+    digitalWrite(magnetic,LOW);
+    digitalWrite(solenoid,HIGH);
     digitalWrite(buzz,HIGH)
     LINE.notify(name + "attend work at"+ hour()+","+minute());
   }
